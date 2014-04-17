@@ -1,15 +1,19 @@
 __author__ = 'ysekky'
 
 from application import app
-from flask import render_template
+from flask import render_template, request
 
 @app.route('/')
 def index():
     return 'Hello World'
 
 
-@app.route('/visualize/<tablename>')
-def visualize(tablename='table', chart_id='chart_id', chart_type="bar", chart_height=350):
+@app.route('/visualize')
+def visualize():
+    table = request.args.get('table', 'table')
+    chart_id = request.args.get('chart_id', 'chart_id').encode('utf-8')
+    chart_type = request.args.get('chart_type', 'bar').encode('utf-8')
+    chart_height = int(request.args.get('chart_height', 350))
     chart = {"renderTo": chart_id, "type": chart_type, "height": chart_height,}
     series = [{"name": 'Label1', "data": [1, 2, 3]}, {"name": 'Label2', "data": [4, 5, 6]}]
     title = {"text": 'My Title'}
